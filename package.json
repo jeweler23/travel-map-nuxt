@@ -12,15 +12,20 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.5.3",
     "nuxt": "^3.12.4",
-    "vue": "latest"
+    "pinia": "^2.2.1",
+    "vue": "^3.4.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.1",
     "@eslint/js": "^8.57.0",
     "@stylistic/eslint-plugin": "^2.6.1",
+    "autoprefixer": "^10.4.20",
     "eslint": "8.57.0",
     "eslint-plugin-vue": "^9.27.0",
-    "globals": "^15.9.0"
+    "globals": "^15.9.0",
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.9"
   }
 }
