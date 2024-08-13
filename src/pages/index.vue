@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue';
+import { onMounted, shallowRef } from 'vue';
 import type { YMap } from '@yandex/ymaps3-types';
 import { YandexMap, YandexMapDefaultSchemeLayer } from 'vue-yandex-maps';
 import navigation from '@/components/navigation.vue';
@@ -8,6 +8,19 @@ import navigation from '@/components/navigation.vue';
 const map = shallowRef<null | YMap>(null);
 
 const navList = ['login', 'register'];
+const coords = ref<number[]>([]);
+
+onMounted(() => {
+  if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition((position) => {
+					//  выводит координаты местоположения пользователя
+			coords.value?.push(position.coords.longitude);
+			coords.value?.push(position.coords.latitude);
+		}, () => {
+		  coords.value = [37.617644, 55.755819];
+		});
+  }
+});
 </script>
 
 <template>
@@ -22,7 +35,7 @@ const navList = ['login', 'register'];
 					v-model="map"
 					:settings="{
 						location: {
-							center: [37.617644, 55.755819],
+							center: coords as [number, number],
 							zoom: 9,
 						},
 					}"
