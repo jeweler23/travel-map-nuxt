@@ -15,7 +15,8 @@
     "@pinia/nuxt": "^0.5.3",
     "nuxt": "^3.12.4",
     "pinia": "^2.2.1",
-    "vue": "^3.4.0"
+    "vue": "^3.4.0",
+    "vue-yandex-maps": "^2.1.4"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.1",
