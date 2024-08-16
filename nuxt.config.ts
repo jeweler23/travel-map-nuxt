@@ -11,7 +11,11 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     'vue-yandex-maps/nuxt',
+    'nuxt-vue3-google-signin'
   ],
+  googleSignIn: {
+    clientId: process.env.CLIENT_ID_GOOGLE,
+  },
   yandexMaps: {
     apikey: process.env.YANDEX_MAP_API,
   },
