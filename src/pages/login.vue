@@ -1,20 +1,7 @@
 <script setup lang="ts">
-import {
-  type CredentialResponse,
-  GoogleSignInButton,
- useOneTap,
-} from 'vue3-google-signin';
-
-function handleLoginSuccess(response: CredentialResponse) {
-  const { credential } = response;
-  console.log('Access Token', credential);
-}
-
-function handleLoginError() {
-  console.error('Login failed');
-}
-
-const route = useRoute();
+import { type CredentialResponse, useOneTap } from 'vue3-google-signin';
+import FormLayouts from '@/layouts/FormLayouts.vue';
+import LoginForm from '@/components/LoginForm.vue';
 
 useOneTap({
   onSuccess: (response: CredentialResponse) => {
@@ -27,18 +14,20 @@ useOneTap({
 
 <template>
 	<NuxtLayout name="auth">
-		<!-- <p class="p-8 shadow-md">
-
-		</p> -->
-		<google-sign-in-button
-			@success="handleLoginSuccess"
-			@error="handleLoginError"
-		/>
-		<nuxt-link to="/">
-			Home
-		</nuxt-link>
-		<nuxt-link to="login">
-			Login
-		</nuxt-link>
+		<form-layouts>
+			<template #form>
+				<login-form />
+			</template>
+			<template #links>
+				<div class="flex justify-between text-blue-400">
+					<nuxt-link to="/">
+						Home
+					</nuxt-link>
+					<nuxt-link to="register">
+						Register
+					</nuxt-link>
+				</div>
+			</template>
+		</form-layouts>
 	</NuxtLayout>
 </template>

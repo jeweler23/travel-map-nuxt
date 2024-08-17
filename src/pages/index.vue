@@ -4,20 +4,18 @@ import type { YMap } from '@yandex/ymaps3-types';
 import { YandexMap, YandexMapDefaultSchemeLayer } from 'vue-yandex-maps';
 import navigation from '@/components/navigation.vue';
 
-// Можно использовать для различных преобразований
+// хочу сделать, чтобы сначала логин стртаница была
+
 const map = shallowRef<null | YMap>(null);
 
 const navList = ['login', 'register'];
-const coords = ref<number[]>([]);
+const coords = ref<[number, number]>([37.617644, 55.755819]);
 
 onMounted(() => {
   if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition((position) => {
-					//  выводит координаты местоположения пользователя
-			coords.value?.push(position.coords.longitude);
-			coords.value?.push(position.coords.latitude);
-		}, () => {
-		  coords.value = [37.617644, 55.755819];
+			coords.value[0] = position.coords.longitude;
+			coords.value[1] = position.coords.latitude;
 		});
   }
 });
@@ -35,7 +33,7 @@ onMounted(() => {
 					v-model="map"
 					:settings="{
 						location: {
-							center: coords as [number, number],
+							center: coords,
 							zoom: 9,
 						},
 					}"

@@ -1,8 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
   srcDir: 'src/',
   // alias: {
-  //   '@': './src',
+  //  '@': path.resolve(__dirname, './src'),
   // },
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
@@ -11,7 +12,7 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     'vue-yandex-maps/nuxt',
-    'nuxt-vue3-google-signin'
+    'nuxt-vue3-google-signin',
   ],
   googleSignIn: {
     clientId: process.env.CLIENT_ID_GOOGLE,

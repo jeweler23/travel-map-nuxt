@@ -1,17 +1,24 @@
 <script setup lang="ts">
-const route = useRoute();
+import FormLayouts from '@/layouts/FormLayouts.vue';
+import RegisterForm from '@/components/RegisterForm.vue';
 </script>
 
 <template>
 	<NuxtLayout name="auth">
-		<p class="p-8 shadow-md">
-			{{ route.fullPath }}
-		</p>
-		<nuxt-link to="index">
-			Home
-		</nuxt-link>
-		<nuxt-link to="login">
-			Login
-		</nuxt-link>
+		<form-layouts>
+			<template #form>
+				<register-form />
+			</template>
+			<template #links>
+				<div class="flex justify-between text-blue-400">
+					<nuxt-link to="/">
+						Home
+					</nuxt-link>
+					<nuxt-link to="login">
+						Login
+					</nuxt-link>
+				</div>
+			</template>
+		</form-layouts>
 	</NuxtLayout>
 </template>
