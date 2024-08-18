@@ -3,6 +3,7 @@ import { type CredentialResponse, useOneTap } from 'vue3-google-signin';
 import FormLayouts from '@/layouts/FormLayouts.vue';
 import LoginForm from '@/components/LoginForm.vue';
 
+// в хроме почему-то не работает
 useOneTap({
   onSuccess: (response: CredentialResponse) => {
     console.log('Success:', response);

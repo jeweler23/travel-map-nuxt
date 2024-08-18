@@ -3,11 +3,12 @@ interface IList {
   list: string[];
 }
 
-const props = defineProps<IList>();
+defineProps<IList>();
 </script>
 
 <template>
 	<ul>
+		<slot />
 		<li v-for="item in list" :key="item">
 			<NuxtLink :to="item">
 				{{ item }}

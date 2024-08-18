@@ -6,7 +6,7 @@
 			<slot name="nav" />
 		</section>
 		<!-- хыхыхы хз как еще скрыть -->
-		<section class="w-full h-full overflow-hidden">
+		<section class="w-full h-full">
 			<slot name="main" />
 		</section>
 	</main>

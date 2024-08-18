@@ -2,18 +2,27 @@
 
 export default defineNuxtConfig({
   srcDir: 'src/',
-  // alias: {
-  //  '@': path.resolve(__dirname, './src'),
-  // },
+
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   css: ['@/assets/css/main.css'],
+
+  runtimeConfig: {
+    googleClientId: process.env.CLIENT_ID_GOOGLE,
+  },
 
   modules: [
     '@pinia/nuxt',
     'vue-yandex-maps/nuxt',
     'nuxt-vue3-google-signin',
+    'nuxt-mongoose',
   ],
+   mongoose: {
+    uri: process.env.MONGODB_URI,
+    options: {},
+    modelsDir: 'models',
+    devtools: true,
+  },
   googleSignIn: {
     clientId: process.env.CLIENT_ID_GOOGLE,
   },

@@ -4,9 +4,24 @@ import {
   GoogleSignInButton,
 } from 'vue3-google-signin';
 
-function handleLoginSuccess(response: CredentialResponse) {
+import { useCountryStore } from '~/store/countryStore';
+
+const countryStore = useCountryStore();
+
+// google-auth
+async function handleLoginSuccess(response: CredentialResponse) {
   const { credential } = response;
-  console.log('Access Token', credential);
+	if (credential) {
+	const { data } = await useFetch('api/google-login', {
+		method: 'POST',
+		body: {
+			token: credential,
+		},
+	});
+
+	countryStore.src = data.value.picture;
+	console.log(data.value);
+	}
 }
 
 function handleLoginError() {
@@ -15,15 +30,15 @@ function handleLoginError() {
 
 const inputs = ref<Array<Element | ComponentPublicInstance | null>>([]);
 
-const isActive = ref<string[]>([]);
+const activeInputs = ref<string[]>([]);
 
-function handleFocus(name: string) {
-  isActive.value.push(name);
+function addActiveInput(name: string) {
+  activeInputs.value.push(name);
 }
 
 function handleBlur(e: Event, name: string) {
-	if ((e.target as HTMLInputElement).value.length === 0 && isActive.value.length > 0) {
-			isActive.value = isActive.value.filter((item: string) => item !== name);
+	if ((e.target as HTMLInputElement).value.length === 0 && activeInputs.value.length > 0) {
+			activeInputs.value = activeInputs.value.filter((item: string) => item !== name);
 	}
 }
 
@@ -45,14 +60,14 @@ function submitRegisterData() {
 			<label
 				for="login"
 				class="absolute top-[50%] left-2 -translate-y-[50%] pointer-events-none transition-all"
-				:class="{ 'text-xs bg-white  -top-[1px]': isActive.includes('login') }"
+				:class="{ 'text-xs bg-white -top-[0px]': activeInputs.includes('login') }"
 			>Login</label>
 			<input
 				:ref="(el) => (inputs[0] = el)"
 				type="text"
 				class="p-2 border-gray-400 outline-none border-2 rounded-lg w-full"
 				name="login"
-				@focus="handleFocus('login')"
+				@focus="addActiveInput('login')"
 				@blur="handleBlur($event, 'login')"
 			>
 		</div>
@@ -60,7 +75,7 @@ function submitRegisterData() {
 			<label
 				for="login"
 				class="absolute top-[50%] left-2 -translate-y-[50%] z-10 pointer-events-none transition-all"
-				:class="{ 'text-xs bg-white  -top-[1px]': isActive.includes('password') }"
+				:class="{ 'text-xs bg-white -top-[0px]': activeInputs.includes('password') }"
 			>Password</label>
 
 			<input
@@ -68,10 +83,11 @@ function submitRegisterData() {
 				type="password"
 				class="p-2 border-gray-400 outline-none border-2 rounded-lg w-full"
 
-				@focus="handleFocus('password')"
+				@focus="addActiveInput('password')"
 				@blur="handleBlur($event, 'password')"
 			>
 		</div>
+
 		<google-sign-in-button
 			@success="handleLoginSuccess"
 			@error="handleLoginError"

@@ -3,7 +3,9 @@ import { onMounted, shallowRef } from 'vue';
 import type { YMap } from '@yandex/ymaps3-types';
 import { YandexMap, YandexMapDefaultSchemeLayer } from 'vue-yandex-maps';
 import navigation from '@/components/navigation.vue';
+import { useCountryStore } from '~/store/countryStore';
 
+const countryStore = useCountryStore();
 // хочу сделать, чтобы сначала логин стртаница была
 
 const map = shallowRef<null | YMap>(null);
@@ -24,11 +26,13 @@ onMounted(() => {
 <template>
 	<NuxtLayout name="main">
 		<template #nav>
-			<navigation :list="navList" />
+			<navigation :list="navList">
+				<img v-if="countryStore.src" :src="countryStore.src" alt="">
+			</navigation>
 		</template>
 
 		<template #main>
-			<div class="w-96">
+			<div class="w-96 h-[50vh]">
 				<yandex-map
 					v-model="map"
 					:settings="{
@@ -37,8 +41,8 @@ onMounted(() => {
 							zoom: 9,
 						},
 					}"
-					width="100vw"
-					height="100vh"
+					width="100%"
+					height="100%"
 				>
 					<yandex-map-default-scheme-layer />
 				</yandex-map>

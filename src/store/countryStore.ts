@@ -3,5 +3,6 @@ import { ref } from 'vue';
 
 export const useCountryStore = defineStore('countryStore', () => {
     const country = ref(0);
-    return { country };
+    const src = ref('');
+    return { country, src };
 });
