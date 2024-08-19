@@ -15,7 +15,9 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'vue-yandex-maps/nuxt',
     'nuxt-vue3-google-signin',
-    'nuxt-mongoose',
+    // 'nuxt-mongoose',
+    'nuxt-server-utils',
+    // '@sidebase/nuxt-auth',
   ],
    mongoose: {
     uri: process.env.MONGODB_URI,
@@ -28,6 +30,11 @@ export default defineNuxtConfig({
   },
   yandexMaps: {
     apikey: process.env.YANDEX_MAP_API,
+  },
+  nuxtServerUtils: {
+    enabled: true, // default
+    enableDevTools: true, // default
+    mongodbUri: process.env.MONGODB_URI,
   },
   postcss: {
     plugins: {

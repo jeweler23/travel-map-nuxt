@@ -32,7 +32,7 @@ onMounted(() => {
 		</template>
 
 		<template #main>
-			<div class="w-96 h-[50vh]">
+			<div class="w-full h-[100vh]">
 				<yandex-map
 					v-model="map"
 					:settings="{

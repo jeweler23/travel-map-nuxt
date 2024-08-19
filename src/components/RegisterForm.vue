@@ -15,13 +15,23 @@ function handleBlur(e: Event, name: string) {
 
 const form = ref(null);
 
-function submitRegisterData() {
-    if (form.value) {
-      const formData = new FormData(form.value);
-      for (const [key, value] of formData) {
-          console.log(key, value);
-        }
-    }
+const dataRegister = ref({
+	username: '',
+	email: '',
+	password: '',
+});
+
+async function submitRegisterData() {
+	try {
+		const data = await $fetch('/api/auth/register', {
+			method: 'POST',
+			body: dataRegister.value,
+		});
+		console.log(data);
+	}
+	 catch (e) {
+		console.log(e);
+	}
 }
 </script>
 
@@ -31,10 +41,11 @@ function submitRegisterData() {
 			<label
 				for="login"
 				class="absolute top-[50%] left-2 -translate-y-[50%] pointer-events-none transition-all"
-				:class="{ 'text-xs bg-white  -top-[1px]': isActive.includes('login') }"
+				:class="{ 'text-xs bg-white  top-[0px]': isActive.includes('login') }"
 			>Login</label>
 			<input
 				:ref="(el) => (inputs[0] = el)"
+				v-model="dataRegister.username"
 				type="text"
 				class="p-2 border-gray-400 outline-none border-2 rounded-lg w-full"
 				name="login"
@@ -46,10 +57,11 @@ function submitRegisterData() {
 			<label
 				for="email"
 				class="absolute top-[50%] left-2 -translate-y-[50%] pointer-events-none transition-all"
-				:class="{ 'text-xs bg-white  -top-[1px]': isActive.includes('email') }"
+				:class="{ 'text-xs bg-white  top-[0px]': isActive.includes('email') }"
 			>Email</label>
 			<input
 				:ref="(el) => (inputs[0] = el)"
+				v-model="dataRegister.email"
 				type="email"
 				class="p-2 border-gray-400 outline-none border-2 rounded-lg w-full"
 				name="email"
@@ -61,12 +73,13 @@ function submitRegisterData() {
 			<label
 				for="password"
 				class="absolute top-[50%] left-2 -translate-y-[50%] z-10 pointer-events-none transition-all"
-				:class="{ 'text-xs bg-white  -top-[1px]': isActive.includes('password') }"
+				:class="{ 'text-xs bg-white  top-[0px]': isActive.includes('password') }"
 			>
 				Password
 			</label>
 			<input
 				:ref="(el) => (inputs[1] = el)"
+				v-model="dataRegister.password"
 				type="password"
 				class="p-2 border-gray-400 outline-none border-2 rounded-lg w-full"
 				@focus="handleFocus('password')"

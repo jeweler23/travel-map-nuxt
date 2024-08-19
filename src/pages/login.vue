@@ -4,13 +4,13 @@ import FormLayouts from '@/layouts/FormLayouts.vue';
 import LoginForm from '@/components/LoginForm.vue';
 
 // в хроме почему-то не работает
-useOneTap({
-  onSuccess: (response: CredentialResponse) => {
-    console.log('Success:', response);
-  },
-  onError: () => console.error('Error with One Tap Login'),
-  // options
-});
+// useOneTap({
+//   onSuccess: (response: CredentialResponse) => {
+//     console.log('Success:', response);
+//   },
+//   onError: () => console.error('Error with One Tap Login'),
+//   // options
+// });
 </script>
 
 <template>

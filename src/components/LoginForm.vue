@@ -12,14 +12,17 @@ const countryStore = useCountryStore();
 async function handleLoginSuccess(response: CredentialResponse) {
   const { credential } = response;
 	if (credential) {
-	const { data } = await useFetch('api/google-login', {
+	const { data } = await useAsyncData('google', () => $fetch('api/google-login', {
 		method: 'POST',
 		body: {
 			token: credential,
 		},
-	});
+	}));
 
-	countryStore.src = data.value.picture;
+	if (data.value) {
+		countryStore.src = data.value.picture;
+		navigateTo('/');
+	}
 	console.log(data.value);
 	}
 }
@@ -60,7 +63,7 @@ function submitRegisterData() {
 			<label
 				for="login"
 				class="absolute top-[50%] left-2 -translate-y-[50%] pointer-events-none transition-all"
-				:class="{ 'text-xs bg-white -top-[0px]': activeInputs.includes('login') }"
+				:class="{ 'text-xs bg-white top-[0px]': activeInputs.includes('login') }"
 			>Login</label>
 			<input
 				:ref="(el) => (inputs[0] = el)"
@@ -75,7 +78,7 @@ function submitRegisterData() {
 			<label
 				for="login"
 				class="absolute top-[50%] left-2 -translate-y-[50%] z-10 pointer-events-none transition-all"
-				:class="{ 'text-xs bg-white -top-[0px]': activeInputs.includes('password') }"
+				:class="{ 'text-xs bg-white top-[0px]': activeInputs.includes('password') }"
 			>Password</label>
 
 			<input
