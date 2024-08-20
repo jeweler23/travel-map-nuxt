@@ -1,5 +1,8 @@
 // import { createError } from 'nuxt/dist/app/composables/error';
+import bcrypt from 'bcrypt';
 import { User } from '../../models/User';
+import { generateTokens, saveToken } from '../../token/tokengenerate';
+import UserDto from '../../dto/user-dto';
 
 export default defineEventHandler(async (data) => {
   const body = await readBody(data);
@@ -10,7 +13,33 @@ export default defineEventHandler(async (data) => {
       message: 'Missing required fields',
     });
   }
-  const user = await User.create({ ...body });
+  // Можно не делать, так как стоит проверка на уникальность полей
+  const findUser = await User.findOne({ ...body.email });
+  if (findUser) {
+    throw createError({
+      message: 'User already exists',
+    });
+  }
+  // хэшируем пароль
+  const hashPassword = await bcrypt.hash(body.password, 3);
+  // создаем юзера
+  const user = await User.create({ ...body, password: hashPassword });
+  // получаем нужные данные из юзера
+  const userDto = new UserDto(user); // id,email
+  // генерируем токены
+  const token = generateTokens({ ...userDto });
+  console.log(token);
+  console.log({ ...userDto });
+  // созраняем рефреш по айди юзера
+  await saveToken(userDto.id, token.refreshToken);
 
-return { ...user };
+  setCookie(event, 'refreshToken', token.refreshToken, {
+    httpOnly: true, // доступен только на сервере
+    secure: true, // куки будут передаваться только по HTTPS
+    sameSite: 'strict', // куки будут отправляться только с запросами того же сайта
+    path: '/', // куки будет доступен на всех путях
+    maxAge: 60 * 60 * 24 * 30, // куки будет действовать 30 дней
+  });
+
+  return { ...token, user: UserDto };
 });

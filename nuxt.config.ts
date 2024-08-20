@@ -9,6 +9,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     googleClientId: process.env.CLIENT_ID_GOOGLE,
+    accessToken: process.env.JWT_ACCESS_SECRET,
+    refreshToken: process.env.JWT_REFRESH_SECRET,
   },
 
   modules: [
