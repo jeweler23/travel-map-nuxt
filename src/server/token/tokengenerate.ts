@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { Token } from '../models/Token';
-// import { useRuntimeConfig } from 'nuxt/dist/app/nuxt';
 
 const config = useRuntimeConfig();
 
@@ -15,6 +14,8 @@ export function generateTokens(payload) {
 }
 
 export async function saveToken(userId: string, refreshToken: string) {
+  console.log('asd');
+
   const tokenData = await Token.findOne({ user: userId });
   if (tokenData) {
     tokenData.refreshToken = refreshToken;

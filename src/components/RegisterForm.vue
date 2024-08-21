@@ -23,13 +23,13 @@ const dataRegister = ref({
 
 async function submitRegisterData() {
 	try {
-		const data = await $fetch('/api/auth/register', {
-			method: 'POST',
-			body: dataRegister.value,
-		});
-		console.log(data);
+		const { data } = await useAsyncData('register', () => $fetch('/api/auth/register', {
+    method: 'POST',
+    body: dataRegister.value,
+  }));
+		console.log(data.value);
 	}
-	 catch (e) {
+	catch (e) {
 		console.log(e);
 	}
 }

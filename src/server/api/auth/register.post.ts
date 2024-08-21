@@ -26,20 +26,21 @@ export default defineEventHandler(async (data) => {
   const user = await User.create({ ...body, password: hashPassword });
   // получаем нужные данные из юзера
   const userDto = new UserDto(user); // id,email
+  console.log(userDto);
+
   // генерируем токены
   const token = generateTokens({ ...userDto });
-  console.log(token);
-  console.log({ ...userDto });
+
   // созраняем рефреш по айди юзера
   await saveToken(userDto.id, token.refreshToken);
 
-  setCookie(event, 'refreshToken', token.refreshToken, {
-    httpOnly: true, // доступен только на сервере
-    secure: true, // куки будут передаваться только по HTTPS
-    sameSite: 'strict', // куки будут отправляться только с запросами того же сайта
-    path: '/', // куки будет доступен на всех путях
-    maxAge: 60 * 60 * 24 * 30, // куки будет действовать 30 дней
-  });
+  // setCookie(event, 'refreshToken', token.refreshToken, {
+  //   httpOnly: true, // доступен только на сервере
+  //   secure: true, // куки будут передаваться только по HTTPS
+  //   sameSite: 'strict', // куки будут отправляться только с запросами того же сайта
+  //   path: '/', // куки будет доступен на всех путях
+  //   maxAge: 60 * 60 * 24 * 30, // куки будет действовать 30 дней
+  // });
 
-  return { ...token, user: UserDto };
+  return { ...token, user: userDto };
 });
