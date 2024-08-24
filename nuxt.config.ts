@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     googleClientId: process.env.CLIENT_ID_GOOGLE,
     accessToken: process.env.JWT_ACCESS_SECRET,
     refreshToken: process.env.JWT_REFRESH_SECRET,
+    yandexSuggest: process.env.YANDEX_MAP_SUGGEST_KEY,
   },
 
   modules: [
@@ -29,6 +30,7 @@ export default defineNuxtConfig({
   },
   googleSignIn: {
     clientId: process.env.CLIENT_ID_GOOGLE,
+
   },
   yandexMaps: {
     apikey: process.env.YANDEX_MAP_API,
