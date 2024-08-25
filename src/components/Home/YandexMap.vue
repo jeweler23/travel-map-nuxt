@@ -37,17 +37,41 @@ const setCoordinates: DomEventHandler = async (document, event) => {
 
 const searchCity = ref('');
 
-const suggestResponse = ref();
+function debounce(func, ms) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), ms);
+  };
+}
 
-watch(searchCity, async () => {
-  const { data } = await useAsyncData('suggest', () => $fetch('/api/suggest/yandex-suggest', {
+async function fetchSuggestions() {
+  return $fetch('/api/yandex/yandex-suggest', {
     method: 'GET',
     params: { text: searchCity.value },
-  }));
+  });
+}
 
-  suggestResponse.value = data.value.results;
-  console.log(suggestResponse.value);
+const debouncedFetchSuggestions = debounce(fetchSuggestions, 300);
+
+const { data } = await useAsyncData('suggest', () => debouncedFetchSuggestions(searchCity.value), {
+    watch: [searchCity],
 });
+
+const suggestResponse = computed(() => data.value.results);
+
+async function setSearchPlace(place) {
+	searchCity.value = place;
+	const data = await $fetch('/api/yandex/geocode', {
+		method: 'GET',
+		params: {
+			place: searchCity.value,
+		},
+	});
+	const coordsString = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+	coords.value = coordsString.split(' ').map(Number);
+	markerCoords.value = coords.value;
+}
 </script>
 
 <template>
@@ -76,10 +100,10 @@ watch(searchCity, async () => {
 					<suggest-input v-model="searchCity" placeholder="Введите название города" />
 					<ul id="suggest" class="w-full text-black z-50 bg-white">
 						<li
-							v-for="item in suggestResponse ?? []"
-							:key="item.address.formatted_address"
+							v-for="(item, index) in suggestResponse ?? []"
+							:key="index"
 							class="w-52 cursor-pointer"
-							@click="searchCity = item.address.formatted_address"
+							@click="setSearchPlace(item.address.formatted_address)"
 						>
 							{{ item.address.formatted_address }}
 						</li>

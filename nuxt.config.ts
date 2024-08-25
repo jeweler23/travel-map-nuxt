@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     accessToken: process.env.JWT_ACCESS_SECRET,
     refreshToken: process.env.JWT_REFRESH_SECRET,
     yandexSuggest: process.env.YANDEX_MAP_SUGGEST_KEY,
+    yandexMap: process.env.YANDEX_MAP_API,
   },
 
   modules: [

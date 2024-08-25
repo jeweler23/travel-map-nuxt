@@ -40,7 +40,7 @@ async function submitRegisterData() {
 		<div class="relative">
 			<label
 				for="login"
-				class="absolute top-[50%] left-2 -translate-y-[50%] pointer-events-none transition-all"
+				class="absolute  left-2 -translate-y-[50%] pointer-events-none transition-all text-xs bg-white"
 				:class="{ 'text-xs bg-white  top-[0px]': isActive.includes('login') }"
 			>Login</label>
 			<input
@@ -56,7 +56,7 @@ async function submitRegisterData() {
 		<div class="relative">
 			<label
 				for="email"
-				class="absolute top-[50%] left-2 -translate-y-[50%] pointer-events-none transition-all"
+				class="absolute  left-2 -translate-y-[50%] pointer-events-none transition-all text-xs bg-white"
 				:class="{ 'text-xs bg-white  top-[0px]': isActive.includes('email') }"
 			>Email</label>
 			<input
@@ -72,8 +72,8 @@ async function submitRegisterData() {
 		<div class="relative">
 			<label
 				for="password"
-				class="absolute top-[50%] left-2 -translate-y-[50%] z-10 pointer-events-none transition-all"
-				:class="{ 'text-xs bg-white  top-[0px]': isActive.includes('password') }"
+				class="absolute  left-2 -translate-y-[50%] z-10 pointer-events-none transition-all text-xs bg-white "
+				:class="{ 'text-xs bg-white  -top-[50%]': isActive.includes('password') }"
 			>
 				Password
 			</label>
@@ -82,15 +82,15 @@ async function submitRegisterData() {
 				v-model="dataRegister.password"
 				type="password"
 				class="p-2 border-gray-400 outline-none border-2 rounded-lg w-full"
-				@focus="handleFocus('password')"
-				@blur="handleBlur($event, 'password')"
 			>
+			<!-- 				@focus="handleFocus('password')"
+				@blur="handleBlur($event, 'password')" -->
 		</div>
 
 		<input
 			type="submit"
 			class="text-white bg-blue-400 p-2 rounded-2xl cursor-pointer"
-			value="Войти"
+			value="Регистрация"
 		>
 	</form>
 </template>

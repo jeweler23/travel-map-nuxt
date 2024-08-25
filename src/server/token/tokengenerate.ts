@@ -14,8 +14,6 @@ export function generateTokens(payload) {
 }
 
 export async function saveToken(userId: string, refreshToken: string) {
-  console.log('asd');
-
   const tokenData = await Token.findOne({ user: userId });
   if (tokenData) {
     tokenData.refreshToken = refreshToken;

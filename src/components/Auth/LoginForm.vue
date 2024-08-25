@@ -47,12 +47,20 @@ function handleBlur(e: Event, name: string) {
 
 const form = ref(null);
 
-function submitRegisterData() {
+async function submitRegisterData() {
     if (form.value) {
       const formData = new FormData(form.value);
-      for (const [key, value] of formData) {
-          console.log(key, value);
-        }
+			const username = formData.get('login');
+			const password = formData.get('password');
+
+			console.log('Username:', username);
+			console.log('Password:', password);
+
+			const { data } = await useAsyncData('login', () => $fetch('/api/auth/login', {
+				method: 'GET',
+				params: { username, password },
+			}));
+			console.log(data.value);
     }
 }
 </script>
@@ -76,7 +84,7 @@ function submitRegisterData() {
 		</div>
 		<div class="relative">
 			<label
-				for="login"
+				for="password"
 				class="absolute top-[50%] left-2 -translate-y-[50%] z-10 pointer-events-none transition-all"
 				:class="{ 'text-xs bg-white top-[0px]': activeInputs.includes('password') }"
 			>Password</label>
@@ -84,6 +92,7 @@ function submitRegisterData() {
 			<input
 				:ref="(el) => (inputs[1] = el)"
 				type="password"
+				name="password"
 				class="p-2 border-gray-400 outline-none border-2 rounded-lg w-full"
 
 				@focus="addActiveInput('password')"
