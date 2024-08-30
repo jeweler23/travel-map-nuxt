@@ -26,8 +26,6 @@ const markers = computed(() => [
   {
     coordinates: markerCoords.value,
     color: 'red',
-    // title: addressString.value,
-
   },
 ]);
 
@@ -37,11 +35,15 @@ const setCoordinates: DomEventHandler = async (document, event) => {
 
 const searchCity = ref('');
 
-function debounce(func, ms) {
-  let timeout;
-  return function (...args) {
+ function debounce(func: Function, ms: number) {
+  let timeout: any;
+  return function (...args: string[]) {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), ms);
+    return new Promise((resolve) => {
+      timeout = setTimeout(() => {
+        resolve(func.apply(this, args));
+      }, ms);
+    });
   };
 }
 
@@ -55,12 +57,12 @@ async function fetchSuggestions() {
 const debouncedFetchSuggestions = debounce(fetchSuggestions, 300);
 
 const { data } = await useAsyncData('suggest', () => debouncedFetchSuggestions(searchCity.value), {
-    watch: [searchCity],
+  watch: [searchCity],
 });
 
 const suggestResponse = computed(() => data.value.results);
 
-async function setSearchPlace(place) {
+async function setSearchPlace(place: string) {
 	searchCity.value = place;
 	const data = await $fetch('/api/yandex/geocode', {
 		method: 'GET',

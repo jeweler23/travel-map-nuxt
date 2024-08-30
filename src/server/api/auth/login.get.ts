@@ -6,8 +6,10 @@ import UserDto from '../../dto/user-dto';
 
 export default defineEventHandler(async (data) => {
   const body = getQuery(data);
+  console.log(body.username);
 
-  const findUser = await User.findOne({ ...body.username });
+  const findUser = await User.findOne({ username: body.username });
+  console.log(findUser);
 
   if (!findUser) {
     throw createError({

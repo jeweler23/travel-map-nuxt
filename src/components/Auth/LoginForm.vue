@@ -53,8 +53,8 @@ async function submitRegisterData() {
 			const username = formData.get('login');
 			const password = formData.get('password');
 
-			console.log('Username:', username);
-			console.log('Password:', password);
+			console.log('username:', username);
+			console.log('password:', password);
 
 			const { data } = await useAsyncData('login', () => $fetch('/api/auth/login', {
 				method: 'GET',
