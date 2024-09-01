@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, shallowRef } from 'vue';
 import type { DomEventHandler, YMap } from '@yandex/ymaps3-types';
-import type { YMapMarkerProps } from '@yandex/ymaps3-types/imperative/YMapMarker';
 import { YandexMap, YandexMapDefaultFeaturesLayer, YandexMapDefaultMarker, YandexMapDefaultSchemeLayer, YandexMapEntity, YandexMapListener } from 'vue-yandex-maps';
 import SuggestInput from '../Inputs/SuggestInput.vue';
 import type { LatLon } from '~/Types/map';

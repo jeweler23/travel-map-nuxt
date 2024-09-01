@@ -22,3 +22,33 @@ export async function saveToken(userId: string, refreshToken: string) {
   const token = await Token.create({ user: userId, refreshToken });
   return token;
 }
+
+export async function removeToken(refreshToken) {
+  const tokenData = await Token.deleteOne({ refreshToken });
+  return tokenData;
+}
+
+export function validateAccessToken(token) {
+  try {
+    const userData = jwt.verify(token, config.accessToken);
+    return userData;
+  }
+ catch (e) {
+    return null;
+  }
+}
+
+export function validateRefreshToken(token) {
+  try {
+    const userData = jwt.verify(token, config.refreshToken);
+    return userData;
+  }
+ catch (e) {
+    return null;
+  }
+}
+
+export async function findToken(refreshToken) {
+  const tokenData = await Token.findOne({ refreshToken });
+  return tokenData;
+}

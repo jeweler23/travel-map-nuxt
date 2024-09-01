@@ -1,27 +1,17 @@
-// import { createError } from 'nuxt/dist/app/composables/error';
-import bcrypt from 'bcrypt';
 import { User } from '../../models/User';
-import { generateTokens, saveToken } from '../../token/tokengenerate';
+import { findToken, generateTokens, saveToken, validateRefreshToken } from '../../token/tokengenerate';
 import UserDto from '../../dto/user-dto';
 
-export default defineEventHandler(async (data) => {
-  const body = getQuery(data);
+export default defineEventHandler(async (token) => {
+  const refreshToken = getQuery(token);
 
-  const findUser = await User.findOne({ username: body.username });
-
-  if (!findUser) {
-    throw createError({
-      message: 'User not found',
-    });
+   const userData = validateRefreshToken(refreshToken);
+   const tokenFromDb = await findToken(refreshToken);
+  if (!userData || !tokenFromDb) {
+    console.log('Ошибка');
   }
-  // проверяем пароль
-  const isPassEquals = await bcrypt.compare(body.password, findUser.password);
 
-  if (!isPassEquals) {
-    throw createError({
-      message: 'Passwords are not equal',
-    });
-  }
+  const findUser = await User.findById(userData.id);
 
   // получаем нужные данные из юзера
   const userDto = new UserDto(findUser); // id,email
