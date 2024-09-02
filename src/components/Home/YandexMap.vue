@@ -3,6 +3,8 @@ import { onMounted, shallowRef } from 'vue';
 import type { DomEventHandler, YMap } from '@yandex/ymaps3-types';
 import { YandexMap, YandexMapDefaultFeaturesLayer, YandexMapDefaultMarker, YandexMapDefaultSchemeLayer, YandexMapEntity, YandexMapListener } from 'vue-yandex-maps';
 import SuggestInput from '../Inputs/SuggestInput.vue';
+import { debounce } from '~/utils/debounce';
+
 import type { LatLon } from '~/Types/map';
 
 const map = shallowRef<null | YMap>(null);
@@ -33,18 +35,6 @@ const setCoordinates: DomEventHandler = async (document, event) => {
 };
 
 const searchCity = ref('');
-
- function debounce(func: Function, ms: number) {
-  let timeout: any;
-  return function (...args: string[]) {
-    clearTimeout(timeout);
-    return new Promise((resolve) => {
-      timeout = setTimeout(() => {
-        resolve(func.apply(this, args));
-      }, ms);
-    });
-  };
-}
 
 async function fetchSuggestions() {
   return $fetch('/api/yandex/yandex-suggest', {
